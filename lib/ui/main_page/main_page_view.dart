@@ -60,16 +60,16 @@ class _MainPageViewState extends State<MainPageView>
                         tabs: [
                           Tab(
                               child: tabItemText(
-                                  'Radio Station', model.currentIndex == 0)),
+                                  'Radio Stations', model.currentIndex == 0)),
                           Tab(
                               child: tabItemText(
-                                  'Recent', model.currentIndex == 1)),
+                                  'Recents', model.currentIndex == 1)),
                           Tab(
                               child: tabItemText(
                                   'Favorites', model.currentIndex == 2)),
                           Tab(
                               child: tabItemText(
-                                  'Top Station', model.currentIndex == 3)),
+                                  'Top Stations', model.currentIndex == 3)),
                         ],
                       ),
                       Expanded(
