@@ -121,19 +121,21 @@ class PlayerView extends StatelessWidget {
                           const SizedBox(
                             height: 16,
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                'Similar Stations:',
-                                style: AppThemes.getTextTheme()
-                                    .headline6
-                                    ?.copyWith(color: MyColors.white),
-                              ),
-                            ),
-                          ),
+                          model.stationDataObject == null
+                              ? const SizedBox()
+                              : Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      'Similar Stations:',
+                                      style: AppThemes.getTextTheme()
+                                          .headline6
+                                          ?.copyWith(color: MyColors.white),
+                                    ),
+                                  ),
+                                ),
                           const SizedBox(
                             height: 4,
                           ),
@@ -144,8 +146,7 @@ class PlayerView extends StatelessWidget {
                                 color: MyColors.black.withOpacity(.4)),
                             child: SuggestedStationsView(
                               onChanged: model.onChangedStation,
-                              stations:
-                                  model.stationDataObject?.youMayLike ?? [],
+                              stations: model.stationDataObject!.youMayLike,
                             ),
                           ),
                         ],
