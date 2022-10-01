@@ -64,7 +64,7 @@ class MyColors {
 
   static const inputBorderColor = Color(0xFFDDE1ED);
   static const lightRed = Color(0xFFE33E3E);
-  static const searchItemBackground = Color(0xFF3B81F7);
+  static const lightBlue = Color(0xFF3B81F7);
   static const asanaTagBackground = Color(0xFFE1726E);
 
   static const groupByDescriptionNumberColor = Color(0xFFC4C4C4);
