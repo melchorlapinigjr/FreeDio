@@ -16,6 +16,8 @@ class MainPageViewModel extends AppBaseViewModel {
   int currentIndex = 0;
   bool showSearchLoading = false;
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   void init(mainPageViewState) async {
     setBusy(true);
     tabController = TabController(length: 3, vsync: mainPageViewState);
@@ -93,5 +95,15 @@ class MainPageViewModel extends AppBaseViewModel {
   void onStationPressed(StationObject object) {
     navigationService.pushNamed(Routes.PlayerView,
         arguments: PlayerViewArguments(stationObject: object, player: player));
+  }
+
+  void onRatePressed() {
+    scaffoldKey.currentState?.closeDrawer();
+    snackBarService
+        .showSnackBar('Will be available on the next update. Thank you!');
+  }
+
+  void openMyDrawer() {
+    scaffoldKey.currentState?.openDrawer();
   }
 }

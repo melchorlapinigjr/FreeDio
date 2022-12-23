@@ -39,7 +39,7 @@ dependencies:
   assets_audio_player: ^3.0.6
   percent_indicator: ^4.2.2
   flutter_rating_bar: ^4.0.1
-  sqflite: ^2.2.2
+  in_app_review: ^2.0.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
