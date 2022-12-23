@@ -18,7 +18,7 @@ class MainPageViewModel extends AppBaseViewModel {
 
   void init(mainPageViewState) async {
     setBusy(true);
-    tabController = TabController(length: 4, vsync: mainPageViewState);
+    tabController = TabController(length: 3, vsync: mainPageViewState);
     tabController.addListener(tabControllerIndexListener);
     await getData();
     setBusy(false);
