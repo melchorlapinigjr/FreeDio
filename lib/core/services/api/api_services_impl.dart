@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:free_radio_philippines/core/models/station_data_object.dart';
@@ -36,10 +33,9 @@ class ApiServiceImpl extends ApiService {
   @override
   Future<StationDataObject?> getStationData(String stationUrl) async {
     StationDataObject? stationDataObject;
-    await dio.get('/slugs/$stationUrl').then((value) {
-      stationDataObject =
-          StationDataObject.fromJson(value.data as Map<String, dynamic>);
-    });
+    final response = await dio.get('/slugs/$stationUrl');
+    stationDataObject =
+        StationDataObject.fromJson(response.data as Map<String, dynamic>);
 
     return stationDataObject;
   }

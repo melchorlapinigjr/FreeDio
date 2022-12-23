@@ -18,6 +18,8 @@ class AppBaseViewModel extends BaseViewModel {
   final apiService = locator<ApiService>();
   final dialogService = locator<DialogService>();
 
+  final AssetsAudioPlayer player = AssetsAudioPlayer();
+
   void hideKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
   }

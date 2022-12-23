@@ -30,13 +30,7 @@ class PlayerView extends StatelessWidget {
                 ? const MyCircularProgressIndicator()
                 : Stack(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        child: MyBlurredBackground(
-                          imageUrl: model.stationDataObject?.data.image,
-                        ),
-                      ),
+                      backgroundView(context, model),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -55,17 +49,37 @@ class PlayerView extends StatelessWidget {
                                 const SizedBox(
                                   height: 4,
                                 ),
-                                RatingBarIndicator(
-                                  rating: double.parse(model.stationDataObject
-                                          ?.data.starRatingAverage ??
-                                      "1"),
-                                  itemBuilder: (context, index) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  itemCount: 5,
-                                  itemSize: 20.0,
-                                  direction: Axis.horizontal,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RatingBarIndicator(
+                                      rating: double.parse(model
+                                              .stationDataObject
+                                              ?.data
+                                              .starRatingAverage ??
+                                          "1"),
+                                      itemBuilder: (context, index) =>
+                                          const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 20.0,
+                                      direction: Axis.horizontal,
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    IconButton(
+                                        onPressed: model.addOrRemoveToFavorites,
+                                        icon: Icon(
+                                          model.isInFavorites
+                                              ? Icons.favorite_border
+                                              : Icons.favorite,
+                                          color: Colors.redAccent,
+                                          size: 32,
+                                        )),
+                                  ],
                                 ),
                                 const SizedBox(
                                   height: 4,
@@ -121,34 +135,6 @@ class PlayerView extends StatelessWidget {
                           const SizedBox(
                             height: 16,
                           ),
-                          model.stationDataObject == null
-                              ? const SizedBox()
-                              : Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Text(
-                                      'Similar Stations:',
-                                      style: AppThemes.getTextTheme()
-                                          .headline6
-                                          ?.copyWith(color: MyColors.white),
-                                    ),
-                                  ),
-                                ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Container(
-                            height: 150,
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                                color: MyColors.black.withOpacity(.4)),
-                            child: SuggestedStationsView(
-                              onChanged: model.onChangedStation,
-                              stations: model.stationDataObject!.youMayLike,
-                            ),
-                          ),
                         ],
                       ),
                       Positioned(
@@ -170,10 +156,53 @@ class PlayerView extends StatelessWidget {
                               width: MediaQuery.of(context).size.width,
                               color: MyColors.black.withOpacity(.6),
                               child: const MyCircularProgressIndicator())),
+                      Positioned(
+                          bottom: 16,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  'Similar Stations:',
+                                  style: AppThemes.getTextTheme()
+                                      .headline6
+                                      ?.copyWith(color: MyColors.white),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Container(
+                                height: 150,
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: MyColors.black.withOpacity(.4)),
+                                child: SuggestedStationsView(
+                                  onChanged: model.onChangedStation,
+                                  stations:
+                                      model.stationDataObject!.youMayLike!,
+                                ),
+                              ),
+                            ],
+                          )),
                     ],
                   ),
           );
         });
+  }
+
+  SizedBox backgroundView(BuildContext context, PlayerViewModel model) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: MyBlurredBackground(
+        imageUrl: model.stationDataObject?.data.image,
+      ),
+    );
   }
 }
 
@@ -230,6 +259,7 @@ class SuggestedStationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView(
       scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 1.2,

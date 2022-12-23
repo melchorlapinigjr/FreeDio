@@ -3,6 +3,7 @@ import 'package:free_radio_philippines/app/app_themes.dart';
 import 'package:free_radio_philippines/resources/colors.dart';
 import 'package:free_radio_philippines/ui/main_page/main_page_view_model.dart';
 import 'package:free_radio_philippines/ui/main_page/tabs/radio_stations_tab.dart';
+import 'package:free_radio_philippines/ui/widgets/my_gridview/my_gridview.dart';
 import 'package:free_radio_philippines/ui/widgets/my_widgets.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,13 +28,34 @@ class _MainPageViewState extends State<MainPageView>
                   ? const MyCircularProgressIndicator()
                   : Column(children: [
                       const SizedBox(
-                        height: 64,
+                        height: 48,
+                      ),
+                      Text('FreeDio Philippines',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(color: Colors.grey.shade50)),
+                      Text(
+                        'Stream for free on all PH radio stations',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 16,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextField(
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          onChanged: model.onSearchTextChanged,
                           decoration: InputDecoration(
+                              prefixIcon: model.showSearchLoading
+                                  ? const CircularProgressIndicator()
+                                  : null,
                               labelText: 'Search station...',
+                              focusColor: Colors.white,
                               labelStyle:
                                   const TextStyle(color: MyColors.lighterGrey),
                               enabledBorder: OutlineInputBorder(
@@ -43,7 +65,7 @@ class _MainPageViewState extends State<MainPageView>
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    width: 1, color: Colors.red),
+                                    width: 1, color: Colors.deepOrange),
                                 borderRadius: BorderRadius.circular(15),
                               )),
                         ),
@@ -67,19 +89,17 @@ class _MainPageViewState extends State<MainPageView>
                           Tab(
                               child: tabItemText(
                                   'Favorites', model.currentIndex == 2)),
-                          Tab(
-                              child: tabItemText(
-                                  'Top Stations', model.currentIndex == 3)),
                         ],
                       ),
                       Expanded(
                           child: TabBarView(
                               controller: model.tabController,
-                              children: const [
-                            RadioStationsTab(),
-                            Text('Recent'),
-                            Text('Favorites'),
-                            Text('Top stations'),
+                              children: [
+                            const RadioStationsTab(),
+                            MyGridView(stations: model.mapOfStations),
+                            MyGridView(
+                                stations: model.mapOfStations,
+                                isRecentStations: false),
                           ]))
                     ]));
         });
@@ -107,7 +127,7 @@ class Delegate extends SliverPersistentHeaderDelegate {
       child: Center(
         child: Text(
           _title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 25,
           ),

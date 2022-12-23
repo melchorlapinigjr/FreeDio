@@ -11,18 +11,48 @@ class PlayerViewModel extends AppBaseViewModel {
   PlayerViewModel(this.stationObject, this.player);
 
   StationDataObject? stationDataObject;
-
+  bool isInFavorites = false;
   bool isBuffering = false;
   bool isPlaying = false;
 
   void init() async {
     setBusy(true);
     await stopPlayer();
-    await getStationData();
+    stationDataObject = await apiService.getStationData(stationObject!.url!);
     playRadio();
     listenToPlayerBuffer();
     listenToPlayerState();
+    checkIfIsInFavorites();
     setBusy(false);
+    addStationToRecent();
+  }
+
+  void addStationToRecent() async {
+    final stations = await prefService.getRecentStations();
+    if (!stations.contains(stationObject!.url!)) {
+      stations.add(stationObject!.url!);
+      prefService.updateRecentStations(stations);
+    }
+  }
+
+  void addOrRemoveToFavorites() async {
+    final stations = await prefService.getFavorites();
+    if (!stations.contains(stationObject!.url!)) {
+      stations.add(stationObject!.url!);
+      prefService.updateFavorites(stations);
+      isInFavorites = true;
+    } else {
+      stations.remove(stationObject!.url!);
+      prefService.updateFavorites(stations);
+      isInFavorites = false;
+    }
+    notifyListeners();
+  }
+
+  void checkIfIsInFavorites() async {
+    final stations = await prefService.getFavorites();
+    isInFavorites = stations.contains(stationObject!.url!);
+    notifyListeners();
   }
 
   Future<void> stopPlayer() async {
@@ -65,6 +95,7 @@ class PlayerViewModel extends AppBaseViewModel {
           url = url.replaceAll('https://vobook.ru/', '');
         }
 
+        logger.d(url);
         player.open(Audio.liveStream(url)).then((value) {
           isBuffering = false;
           notifyListeners();
@@ -79,15 +110,6 @@ class PlayerViewModel extends AppBaseViewModel {
       }
     } catch (e) {
       snackBarService.showSnackBar('Unable to play radios station.');
-    }
-  }
-
-  Future<void> getStationData() async {
-    try {
-      stationDataObject =
-          await apiService.getStationData(stationObject!.url ?? '');
-    } catch (e) {
-      logger.d(e);
     }
   }
 

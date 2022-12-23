@@ -10,7 +10,7 @@ class StationDataObject {
   });
 
   late final Data data;
-  late final List<StationObject> youMayLike;
+  late final List<StationObject>? youMayLike;
   late final ButtonsName buttonsName;
   late final LabelsName labelsName;
   late final LabelsSchedule labelsSchedule;
@@ -28,7 +28,7 @@ class StationDataObject {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['data'] = data.toJson();
-    _data['youMayLike'] = youMayLike.map((e) => e.toJson()).toList();
+    _data['youMayLike'] = youMayLike?.map((e) => e.toJson()).toList();
     _data['buttonsName'] = buttonsName.toJson();
     _data['labelsName'] = labelsName.toJson();
     _data['labelsSchedule'] = labelsSchedule.toJson();
@@ -111,9 +111,9 @@ class Data {
   late final String menutitle;
   late final String menutitle_2;
   late final String? frequency;
-  late final String area;
-  late final String date;
-  late final String wiki;
+  late final String? area;
+  late final String? date;
+  late final String? wiki;
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
