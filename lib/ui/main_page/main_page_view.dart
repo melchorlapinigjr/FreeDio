@@ -41,7 +41,7 @@ class _MainPageViewState extends State<MainPageView>
                                   .displayMedium
                                   ?.copyWith(color: Colors.grey.shade50)),
                           Text(
-                            'Stream for free on all PH radio stations',
+                            'Stream for free on all PH AM/FM radio stations',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelSmall
