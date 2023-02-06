@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:free_radio_philippines/core/models/station_object.dart';
 import 'package:free_radio_philippines/resources/colors.dart';
+import 'package:free_radio_philippines/ui/common/constants.dart';
 
 class MyStationCardItemView extends StatelessWidget {
   final StationObject stationObject;
@@ -23,7 +24,7 @@ class MyStationCardItemView extends StatelessWidget {
           children: [
             CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: stationObject.image ?? '',
+              imageUrl: '${Constants.imageBaseUrl}${stationObject.image}' ?? '',
               progressIndicatorBuilder: (context, url, downloadProgress) =>
                   Center(
                       child: CircularProgressIndicator(
