@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       theme: AppThemes.light,
       navigatorKey: navigationService.navigatorKey,
       onGenerateRoute: StackedRouter().onGenerateRoute,
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       darkTheme: AppThemes.light,
     );
   }

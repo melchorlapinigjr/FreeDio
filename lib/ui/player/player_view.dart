@@ -74,8 +74,8 @@ class PlayerView extends StatelessWidget {
                                         onPressed: model.addOrRemoveToFavorites,
                                         icon: Icon(
                                           model.isInFavorites
-                                              ? Icons.favorite_border
-                                              : Icons.favorite,
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
                                           color: Colors.redAccent,
                                           size: 32,
                                         )),
@@ -200,7 +200,7 @@ class PlayerView extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: MyBlurredBackground(
-        imageUrl: model.stationDataObject?.data.image,
+        imageUrl: '${Constants.imageBaseUrl}${model.stationDataObject?.data.image}',
       ),
     );
   }
