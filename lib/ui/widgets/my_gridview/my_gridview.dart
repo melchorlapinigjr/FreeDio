@@ -15,25 +15,27 @@ class MyGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<MyGridViewModel>.nonReactive(
         viewModelBuilder: () => MyGridViewModel(allStations: stations),
-        onModelReady: (model) => model.init(isRecentStations!),
+        onViewModelReady: (model) => model.init(isRecentStations!),
         builder: (context, model, widget) {
-          return GridView(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                mainAxisExtent: 120,
-                childAspectRatio: 1),
-            padding: const EdgeInsets.all(10),
-            children: [
-              ...model.stations
-                  .map((e) => MyStationCardItemView(
-                        stationObject: e,
-                        onTap: () => model.onStationPressed(e),
-                      ))
-                  .toList(),
-            ],
-          );
+          return LayoutBuilder(builder: (context, constraints) {
+            return GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: constraints.maxWidth >= 720 ? 5 : 3,
+                  crossAxisSpacing: constraints.maxWidth >= 720 ? 10 : 5,
+                  mainAxisSpacing: constraints.maxWidth >= 720 ? 10 : 5,
+                  mainAxisExtent: 120,
+                  childAspectRatio: 1),
+              padding: const EdgeInsets.all(10),
+              children: [
+                ...model.stations
+                    .map((e) => MyStationCardItemView(
+                          stationObject: e,
+                          onTap: () => model.onStationPressed(e),
+                        ))
+                    .toList(),
+              ],
+            );
+          });
         });
   }
 }
