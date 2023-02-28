@@ -5,6 +5,9 @@ import 'package:free_radio_philippines/app/app.router.dart';
 import 'package:free_radio_philippines/app/app_base_view_model.dart';
 import 'package:free_radio_philippines/core/models/station_object.dart';
 import 'package:free_radio_philippines/main.dart';
+import 'package:optimize_battery/optimize_battery.dart';
+
+import 'main_page_view.dart';
 
 class MainPageViewModel extends AppBaseViewModel {
   List<StationObject> stations = [];
@@ -20,9 +23,11 @@ class MainPageViewModel extends AppBaseViewModel {
 
   void init(mainPageViewState) async {
     setBusy(true);
+    checkBatteryOptimization();
     tabController = TabController(length: 3, vsync: mainPageViewState);
     tabController.addListener(tabControllerIndexListener);
     await getData();
+
     setBusy(false);
   }
 
@@ -30,6 +35,34 @@ class MainPageViewModel extends AppBaseViewModel {
   void dispose() {
     player.dispose();
     super.dispose();
+  }
+
+  void checkBatteryOptimization() async {
+    try {
+      //Check if battery optimization is enabled
+      final isIgnored = await OptimizeBattery.isIgnoringBatteryOptimizations();
+      if (!isIgnored) {
+        dialogService.openDialog(
+          Dialog(
+            child: BatteryOptimisationDialog(
+                onDisablePressed: disableBatteryOptimization),
+          ),
+        );
+      }
+    } catch (e) {
+      snackBarService.showSnackBar(
+          'Opps! Something went wrong. Error message: ${e.toString()}');
+    }
+  }
+
+  void disableBatteryOptimization() async {
+    try {
+      dialogService.closeDialog();
+      await OptimizeBattery.openBatteryOptimizationSettings();
+    } catch (e) {
+      snackBarService.showSnackBar(
+          'Opps! Something went wrong. Error message: ${e.toString()}');
+    }
   }
 
   void tabControllerIndexListener() {
