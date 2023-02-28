@@ -96,7 +96,7 @@ class PlayerView extends StatelessWidget {
                                     model.stationDataObject?.data.title ?? '',
                                     textAlign: TextAlign.center,
                                     style: AppThemes.getTextTheme()
-                                        .headline3
+                                        .displaySmall
                                         ?.copyWith(color: MyColors.white),
                                   ),
                                   const SizedBox(
@@ -189,22 +189,21 @@ class PlayerView extends StatelessWidget {
                               const SizedBox(
                                 height: 4,
                               ),
-                              LayoutBuilder(builder: (context, constraints) {
-                                return Container(
-                                  height:
-                                      constraints.maxWidth > 720 ? 360 : 150,
-                                  width: MediaQuery.of(context).size.width,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  decoration: BoxDecoration(
-                                      color: MyColors.black.withOpacity(.4)),
-                                  child: SuggestedStationsView(
-                                    onChanged: model.onChangedStation,
-                                    stations:
-                                        model.stationDataObject!.youMayLike!,
-                                  ),
-                                );
-                              }),
+                              Container(
+                                height: MediaQuery.of(context).size.width > 720
+                                    ? 360
+                                    : 150,
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: MyColors.black.withOpacity(.4)),
+                                child: SuggestedStationsView(
+                                  onChanged: model.onChangedStation,
+                                  stations:
+                                      model.stationDataObject!.youMayLike!,
+                                ),
+                              ),
                             ],
                           )),
                     ],
