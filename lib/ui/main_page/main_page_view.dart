@@ -196,3 +196,48 @@ class Delegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
+
+class BatteryOptimisationDialog extends StatelessWidget {
+  final VoidCallback onDisablePressed;
+
+  const BatteryOptimisationDialog({Key? key, required this.onDisablePressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Battery Optimization',
+            style: Theme.of(context).textTheme.headlineLarge,   textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          const Text(
+            'This app requires you to disable battery optimization for FreeDio PH so that radio can play longer behind or in the background.',
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: onDisablePressed,
+                child: const Text('Disable'),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
