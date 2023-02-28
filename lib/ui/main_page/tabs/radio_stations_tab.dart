@@ -8,24 +8,24 @@ class RadioStationsTab extends ViewModelWidget<MainPageViewModel> {
 
   @override
   Widget build(BuildContext context, MainPageViewModel viewModel) {
-    return GridView(
-      gridDelegate:
-      const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          mainAxisExtent: 120,
-          childAspectRatio: 1),
-      padding: const EdgeInsets.all(10),
-      children: [
-        ...viewModel.stations
-            .map((e) =>
-            MyStationCardItemView(
-              stationObject: e,
-              onTap: () => viewModel.onStationPressed(e),
-            ))
-            .toList(),
-      ],
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return GridView(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: constraints.maxWidth >= 720 ? 5 : 3,
+            crossAxisSpacing: constraints.maxWidth >= 720 ? 10 : 5,
+            mainAxisSpacing: constraints.maxWidth >= 720 ? 10 : 5,
+            mainAxisExtent: 120,
+            childAspectRatio: 1),
+        padding: const EdgeInsets.all(10),
+        children: [
+          ...viewModel.stations
+              .map((e) => MyStationCardItemView(
+                    stationObject: e,
+                    onTap: () => viewModel.onStationPressed(e),
+                  ))
+              .toList(),
+        ],
+      );
+    });
   }
 }

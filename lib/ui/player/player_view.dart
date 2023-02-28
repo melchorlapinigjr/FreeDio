@@ -31,112 +31,127 @@ class PlayerView extends StatelessWidget {
                 : Stack(
                     children: [
                       backgroundView(context, model),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 74, bottom: 16, left: 24, right: 24.0),
-                            child: Column(
-                              children: [
-                                CachedNetworkImage(
-                                    height: 160,
-                                    width: 160,
-                                    fit: BoxFit.cover,
-                                    imageUrl:
-                                    '${Constants.imageBaseUrl}${model.stationDataObject?.data.image}' ??
-                                            ''),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RatingBarIndicator(
-                                      rating: double.parse(model
-                                              .stationDataObject
-                                              ?.data
-                                              .starRatingAverage ??
-                                          "1"),
-                                      itemBuilder: (context, index) =>
-                                          const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                      LayoutBuilder(builder: (context, constraints) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 74, bottom: 16, left: 24, right: 24.0),
+                              child: Column(
+                                children: [
+                                  CachedNetworkImage(
+                                      height: constraints.maxWidth > 720
+                                          ? 240
+                                          : 160,
+                                      width: constraints.maxWidth > 720
+                                          ? 240
+                                          : 160,
+                                      fit: BoxFit.cover,
+                                      imageUrl:
+                                          '${Constants.imageBaseUrl}${model.stationDataObject?.data.image}' ??
+                                              ''),
+                                  SizedBox(
+                                    height: constraints.maxWidth > 720 ? 16 : 4,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      RatingBarIndicator(
+                                        rating: double.parse(model
+                                                .stationDataObject
+                                                ?.data
+                                                .starRatingAverage ??
+                                            "1"),
+                                        itemBuilder: (context, index) =>
+                                            const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        itemCount: 5,
+                                        itemSize: constraints.maxWidth > 720
+                                            ? 40
+                                            : 20.0,
+                                        direction: Axis.horizontal,
                                       ),
-                                      itemCount: 5,
-                                      itemSize: 20.0,
-                                      direction: Axis.horizontal,
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    IconButton(
-                                        onPressed: model.addOrRemoveToFavorites,
-                                        icon: Icon(
-                                          model.isInFavorites
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          color: Colors.redAccent,
-                                          size: 32,
-                                        )),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  model.stationDataObject?.data.title ?? '',
-                                  textAlign: TextAlign.center,
-                                  style: AppThemes.getTextTheme()
-                                      .headline3
-                                      ?.copyWith(color: MyColors.white),
-                                ),
-                                const SizedBox(
-                                  height: 32,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: MyColors.black.withOpacity(.3),
-                                    borderRadius: BorderRadius.circular(24),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      IconButton(
+                                          onPressed:
+                                              model.addOrRemoveToFavorites,
+                                          icon: Icon(
+                                            model.isInFavorites
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: Colors.redAccent,
+                                            size: 32,
+                                          )),
+                                    ],
                                   ),
-                                  child: Text(
-                                    model.stationDataObject?.data.desc ?? '',
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    model.stationDataObject?.data.title ?? '',
                                     textAlign: TextAlign.center,
-                                    maxLines: 5,
-                                    overflow: TextOverflow.ellipsis,
                                     style: AppThemes.getTextTheme()
-                                        .bodyText1
-                                        ?.copyWith(
-                                            color: MyColors.grey, fontSize: 14),
+                                        .headline3
+                                        ?.copyWith(color: MyColors.white),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Visibility(
-                                  visible: model.isBuffering,
-                                  child: const BufferingStationView(),
-                                ),
-                                Visibility(
-                                  visible: !model.isBuffering,
-                                  child: MyPlayerButton(
-                                    key: const Key('control-playerState'),
-                                    iconData: model.isPlaying
-                                        ? Icons.pause_circle
-                                        : Icons.play_circle,
-                                    onPressed: model.playOrPause,
-                                    iconSize: 72,
+                                  const SizedBox(
+                                    height: 32,
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    padding: EdgeInsets.all(
+                                        constraints.maxWidth > 720 ? 24 : 12),
+                                    decoration: BoxDecoration(
+                                      color: MyColors.black.withOpacity(.3),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    child: Text(
+                                      model.stationDataObject?.data.desc ?? '',
+                                      textAlign: TextAlign.center,
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppThemes.getTextTheme()
+                                          .bodyLarge
+                                          ?.copyWith(
+                                              color: MyColors.grey,
+                                              fontSize:
+                                                  constraints.maxWidth > 720
+                                                      ? 20
+                                                      : 14),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Visibility(
+                                    visible: model.isBuffering,
+                                    child: const BufferingStationView(),
+                                  ),
+                                  Visibility(
+                                    visible: !model.isBuffering,
+                                    child: MyPlayerButton(
+                                      key: const Key('control-playerState'),
+                                      iconData: model.isPlaying
+                                          ? Icons.pause_circle
+                                          : Icons.play_circle,
+                                      onPressed: model.playOrPause,
+                                      iconSize:
+                                          constraints.maxWidth > 720 ? 120 : 72,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                        ],
-                      ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        );
+                      }),
                       Positioned(
                         top: 48,
                         left: 4,
@@ -174,19 +189,22 @@ class PlayerView extends StatelessWidget {
                               const SizedBox(
                                 height: 4,
                               ),
-                              Container(
-                                height: 150,
-                                width: MediaQuery.of(context).size.width,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                decoration: BoxDecoration(
-                                    color: MyColors.black.withOpacity(.4)),
-                                child: SuggestedStationsView(
-                                  onChanged: model.onChangedStation,
-                                  stations:
-                                      model.stationDataObject!.youMayLike!,
-                                ),
-                              ),
+                              LayoutBuilder(builder: (context, constraints) {
+                                return Container(
+                                  height:
+                                      constraints.maxWidth > 720 ? 360 : 150,
+                                  width: MediaQuery.of(context).size.width,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                      color: MyColors.black.withOpacity(.4)),
+                                  child: SuggestedStationsView(
+                                    onChanged: model.onChangedStation,
+                                    stations:
+                                        model.stationDataObject!.youMayLike!,
+                                  ),
+                                );
+                              }),
                             ],
                           )),
                     ],
