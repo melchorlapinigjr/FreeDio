@@ -61,7 +61,7 @@ class _MainPageViewState extends State<MainPageView>
                                     ?.copyWith(
                                         color: Colors.white,
                                         fontSize: constraints.maxWidth > 720
-                                            ? 36
+                                            ? 24
                                             : 14),
                                 textAlign: TextAlign.left,
                               ),
