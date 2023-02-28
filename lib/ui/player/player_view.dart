@@ -1,11 +1,11 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:free_radio_philippines/app/app_themes.dart';
 import 'package:free_radio_philippines/core/models/station_object.dart';
 import 'package:free_radio_philippines/resources/colors.dart';
+import 'package:free_radio_philippines/ui/common/constants.dart';
 import 'package:free_radio_philippines/ui/player/player_view_model.dart';
 import 'package:free_radio_philippines/ui/widgets/my_widgets.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -23,7 +23,7 @@ class PlayerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlayerViewModel>.reactive(
         viewModelBuilder: () => PlayerViewModel(stationObject, player),
-        onModelReady: (model) => model.init(),
+        onViewModelReady: (model) => model.init(),
         builder: (context, model, widget) {
           return Scaffold(
             body: model.isBusy && model.stationDataObject == null
@@ -44,7 +44,7 @@ class PlayerView extends StatelessWidget {
                                     width: 160,
                                     fit: BoxFit.cover,
                                     imageUrl:
-                                        model.stationDataObject?.data.image ??
+                                    '${Constants.imageBaseUrl}${model.stationDataObject?.data.image}' ??
                                             ''),
                                 const SizedBox(
                                   height: 4,
