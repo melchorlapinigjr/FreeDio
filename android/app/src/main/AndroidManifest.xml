@@ -3,7 +3,7 @@
     package="com.odysyy.free_radio_philippines">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <!-- <uses-permission android:name="com.google.android.gms.permission.AD_ID"/> -->
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
