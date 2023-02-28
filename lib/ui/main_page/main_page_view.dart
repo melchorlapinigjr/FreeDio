@@ -21,7 +21,7 @@ class _MainPageViewState extends State<MainPageView>
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainPageViewModel>.reactive(
         viewModelBuilder: () => MainPageViewModel(),
-        onModelReady: (model) => model.init(this),
+        onViewModelReady: (model) => model.init(this),
         builder: (context, model, widget) {
           return Scaffold(
               key: model.scaffoldKey,
@@ -30,84 +30,105 @@ class _MainPageViewState extends State<MainPageView>
               body: model.isBusy
                   ? const MyCircularProgressIndicator()
                   : Stack(
+                alignment: Alignment.centerLeft,
                       children: [
-                        Column(children: [
-                          const SizedBox(
-                            height: 48,
-                          ),
-                          Text('FreeDio Philippines',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium
-                                  ?.copyWith(color: Colors.grey.shade50)),
-                          Text(
-                            'Stream for free on all PH AM/FM radio stations',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(color: Colors.white),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextFormField(
-                              style: const TextStyle(color: Colors.white),
-                              onChanged: model.onSearchTextChanged,
-                              decoration: InputDecoration(
-                                  prefixIcon: model.showSearchLoading
-                                      ? const CircularProgressIndicator()
-                                      : null,
-                                  labelText: 'Search station...',
-                                  focusColor: Colors.white,
-                                  labelStyle: const TextStyle(
-                                      color: MyColors.lighterGrey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        width: 1, color: MyColors.lightBlue),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        width: 1, color: Colors.deepOrange),
-                                    borderRadius: BorderRadius.circular(15),
-                                  )),
+                        LayoutBuilder(builder: (context, constraints) {
+                          return Column(children: [
+                            const SizedBox(
+                              height: 48,
                             ),
-                          ),
-                          TabBar(
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            controller: model.tabController,
-                            isScrollable: true,
-                            indicatorWeight: 2,
-                            labelPadding: EdgeInsets.symmetric(
-                                horizontal:
-                                    AppThemes.getMediaQuery().size.width / 10),
-                            onTap: model.setCurrentTabIndex,
-                            tabs: [
-                              Tab(
-                                  child: tabItemText('Radio Stations',
-                                      model.currentIndex == 0)),
-                              Tab(
-                                  child: tabItemText(
-                                      'Recents', model.currentIndex == 1)),
-                              Tab(
-                                  child: tabItemText(
-                                      'Favorites', model.currentIndex == 2)),
-                            ],
-                          ),
-                          Expanded(
-                              child: TabBarView(
-                                  controller: model.tabController,
-                                  children: [
-                                const RadioStationsTab(),
-                                MyGridView(stations: model.mapOfStations),
-                                MyGridView(
-                                    stations: model.mapOfStations,
-                                    isRecentStations: false),
-                              ]))
-                        ]),
+                            Text('FreeDio Philippines',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium
+                                    ?.copyWith(
+                                        color: Colors.grey.shade50,
+                                        fontSize: constraints.maxWidth > 720
+                                            ? 36
+                                            : 28),
+
+                            textAlign: TextAlign.left,),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 74),
+                              child: Text(
+                                'Listen for free on all Philippines AM & FM radio stations',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontSize: constraints.maxWidth > 720
+                                            ? 36
+                                            : 14),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextFormField(
+                                style: const TextStyle(color: Colors.white),
+                                onChanged: model.onSearchTextChanged,
+                                decoration: InputDecoration(
+                                    prefixIcon: model.showSearchLoading
+                                        ? const CircularProgressIndicator()
+                                        : null,
+                                    labelText: 'Search station...',
+                                    focusColor: Colors.white,
+                                    labelStyle: const TextStyle(
+                                        color: MyColors.lighterGrey),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          width: 1, color: MyColors.lightBlue),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          width: 1, color: Colors.deepOrange),
+                                      borderRadius: BorderRadius.circular(15),
+                                    )),
+                              ),
+                            ),
+                            TabBar(
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              controller: model.tabController,
+                              isScrollable: true,
+                              indicatorWeight: 2,
+                              labelPadding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      AppThemes.getMediaQuery().size.width /
+                                          10),
+                              onTap: model.setCurrentTabIndex,
+                              tabs: [
+                                Tab(
+                                    child: tabItemText('Radio Stations',
+                                        model.currentIndex == 0)),
+                                Tab(
+                                    child: tabItemText(
+                                        'Recents', model.currentIndex == 1)),
+                                Tab(
+                                    child: tabItemText(
+                                        'Favorites', model.currentIndex == 2)),
+                              ],
+                            ),
+                            Expanded(
+                                child: TabBarView(
+                                    controller: model.tabController,
+                                    children: [
+                                  const RadioStationsTab(),
+                                  MyGridView(stations: model.mapOfStations),
+                                  MyGridView(
+                                      stations: model.mapOfStations,
+                                      isRecentStations: false),
+                                ]))
+                          ]);
+                        }),
                         Positioned(
                             top: 40,
                             left: 8,
@@ -125,9 +146,9 @@ class _MainPageViewState extends State<MainPageView>
 
   Text tabItemText(String text, bool isSelected) => Text(
         text,
-        style: AppThemes.getTextTheme().bodyText2?.copyWith(
+        style: AppThemes.getTextTheme().bodyMedium?.copyWith(
             fontWeight: FontWeight.w500,
-            color: isSelected ? MyColors.lightRed : MyColors.white),
+            color: isSelected ? Colors.yellow : MyColors.white),
       );
 }
 
