@@ -73,7 +73,10 @@ class _MainPageViewState extends State<MainPageView>
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: TextFormField(
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        constraints.maxWidth > 720 ? 24 : 16),
                                 onChanged: model.onSearchTextChanged,
                                 decoration: InputDecoration(
                                     prefixIcon: model.showSearchLoading
@@ -107,14 +110,20 @@ class _MainPageViewState extends State<MainPageView>
                               onTap: model.setCurrentTabIndex,
                               tabs: [
                                 Tab(
-                                    child: tabItemText('Radio Stations',
-                                        model.currentIndex == 0)),
+                                    child: tabItemText(
+                                        'Radio Stations',
+                                        model.currentIndex == 0,
+                                        constraints.maxWidth > 720 ? 24 : 14)),
                                 Tab(
                                     child: tabItemText(
-                                        'Recents', model.currentIndex == 1)),
+                                        'Recents',
+                                        model.currentIndex == 1,
+                                        constraints.maxWidth > 720 ? 24 : 14)),
                                 Tab(
                                     child: tabItemText(
-                                        'Favorites', model.currentIndex == 2)),
+                                        'Favorites',
+                                        model.currentIndex == 2,
+                                        constraints.maxWidth > 720 ? 24 : 14)),
                               ],
                             ),
                             Expanded(
@@ -144,11 +153,12 @@ class _MainPageViewState extends State<MainPageView>
         });
   }
 
-  Text tabItemText(String text, bool isSelected) => Text(
+  Text tabItemText(String text, bool isSelected, double size) => Text(
         text,
         style: AppThemes.getTextTheme().bodyMedium?.copyWith(
             fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.yellow : MyColors.white),
+            color: isSelected ? Colors.yellow : MyColors.white,
+            fontSize: size),
       );
 }
 
