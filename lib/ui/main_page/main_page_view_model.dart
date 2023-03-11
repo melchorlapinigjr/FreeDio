@@ -6,6 +6,7 @@ import 'package:free_radio_philippines/app/app_base_view_model.dart';
 import 'package:free_radio_philippines/core/models/station_object.dart';
 import 'package:free_radio_philippines/main.dart';
 import 'package:optimize_battery/optimize_battery.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'main_page_view.dart';
 
@@ -18,11 +19,12 @@ class MainPageViewModel extends AppBaseViewModel {
   late TabController tabController;
   int currentIndex = 0;
   bool showSearchLoading = false;
-
+  String appName = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   void init(mainPageViewState) async {
     setBusy(true);
+    await getAppName();
     checkBatteryOptimization();
     tabController = TabController(length: 3, vsync: mainPageViewState);
     tabController.addListener(tabControllerIndexListener);
@@ -37,6 +39,13 @@ class MainPageViewModel extends AppBaseViewModel {
     super.dispose();
   }
 
+  Future<void> getAppName() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    notifyListeners();
+  }
+
   void checkBatteryOptimization() async {
     try {
       //Check if battery optimization is enabled
@@ -45,7 +54,9 @@ class MainPageViewModel extends AppBaseViewModel {
         dialogService.openDialog(
           Dialog(
             child: BatteryOptimisationDialog(
-                onDisablePressed: disableBatteryOptimization),
+              onDisablePressed: disableBatteryOptimization,
+              appName: appName,
+            ),
           ),
         );
       }

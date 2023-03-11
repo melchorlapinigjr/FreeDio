@@ -26,28 +26,30 @@ class _MainPageViewState extends State<MainPageView>
           return Scaffold(
               key: model.scaffoldKey,
               backgroundColor: MyColors.background,
-              drawer: const MyDrawerView(),
+              drawer: MyDrawerView(
+                appName: model.appName,
+              ),
               body: model.isBusy
                   ? const MyCircularProgressIndicator()
                   : Stack(
-                alignment: Alignment.centerLeft,
+                      alignment: Alignment.centerLeft,
                       children: [
                         LayoutBuilder(builder: (context, constraints) {
                           return Column(children: [
                             const SizedBox(
                               height: 48,
                             ),
-                            Text('FreeDio Philippines',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium
-                                    ?.copyWith(
-                                        color: Colors.grey.shade50,
-                                        fontSize: constraints.maxWidth > 720
-                                            ? 36
-                                            : 28),
-
-                            textAlign: TextAlign.left,),
+                            Text(
+                              model.appName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium
+                                  ?.copyWith(
+                                      color: Colors.grey.shade50,
+                                      fontSize:
+                                          constraints.maxWidth > 720 ? 36 : 28),
+                              textAlign: TextAlign.left,
+                            ),
                             const SizedBox(
                               height: 8,
                             ),
@@ -199,8 +201,10 @@ class Delegate extends SliverPersistentHeaderDelegate {
 
 class BatteryOptimisationDialog extends StatelessWidget {
   final VoidCallback onDisablePressed;
+  final String appName;
 
-  const BatteryOptimisationDialog({Key? key, required this.onDisablePressed})
+  const BatteryOptimisationDialog(
+      {Key? key, required this.onDisablePressed, required this.appName})
       : super(key: key);
 
   @override
@@ -212,13 +216,14 @@ class BatteryOptimisationDialog extends StatelessWidget {
         children: [
           Text(
             'Battery Optimization',
-            style: Theme.of(context).textTheme.headlineLarge,   textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineLarge,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 8,
           ),
-          const Text(
-            'This app requires you to disable battery optimization for FreeDio PH so that radio can play longer behind or in the background.',
+          Text(
+            'This app requires you to disable battery optimization for $appName so that radio can play longer behind or in the background. Please add $appName in the NOT OPTIMISED battery optimisation list.',
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -229,7 +234,7 @@ class BatteryOptimisationDialog extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: onDisablePressed,
-                child: const Text('Disable'),
+                child: const Text('Proceed'),
               ),
               const SizedBox(
                 height: 8,

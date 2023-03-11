@@ -4,7 +4,9 @@ import 'package:free_radio_philippines/ui/main_page/main_page_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 class MyDrawerView extends ViewModelWidget<MainPageViewModel> {
-  const MyDrawerView({Key? key}) : super(key: key);
+  final String appName;
+
+  const MyDrawerView({Key? key, required this.appName}) : super(key: key);
 
   @override
   Widget build(BuildContext context, MainPageViewModel viewModel) {
@@ -32,7 +34,7 @@ class MyDrawerView extends ViewModelWidget<MainPageViewModel> {
             height: 24,
           ),
           buildTextItem(context,
-              'FreeDio is a free streaming radio station app made from Odyssy - a software company focussing in cross platform mobile development.'),
+              '$appName is a free internet radio station app made from Odyssy - a software company focussing in cross platform mobile development.'),
           const SizedBox(
             height: 16,
           ),
