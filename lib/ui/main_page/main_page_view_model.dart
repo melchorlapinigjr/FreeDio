@@ -50,7 +50,7 @@ class MainPageViewModel extends AppBaseViewModel {
     try {
       //Check if battery optimization is enabled
       final isIgnored = await OptimizeBattery.isIgnoringBatteryOptimizations();
-      if (!isIgnored) {
+      if (isIgnored) {
         dialogService.openDialog(
           Dialog(
             child: BatteryOptimisationDialog(

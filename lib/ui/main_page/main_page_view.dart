@@ -232,6 +232,14 @@ class BatteryOptimisationDialog extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              TextButton(
+                  child: const Text('Do this later'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              const SizedBox(
+                width: 8,
+              ),
               ElevatedButton(
                 onPressed: onDisablePressed,
                 child: const Text('Proceed'),
