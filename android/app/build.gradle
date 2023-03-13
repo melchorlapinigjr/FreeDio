@@ -53,8 +53,8 @@ android {
         applicationId "com.odysyy.free_radio_philippines"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion 31
         targetSdkVersion 33
+        minSdkVersion 23
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
